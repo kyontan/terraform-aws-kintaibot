@@ -48,7 +48,7 @@ RESPONSES = {
 UNDEFINED_ACTION_TEXT = os.environ['undef_action_text'].split(';')
 ILLEGAL_ACTION_TEXT = os.environ['illegal_action_text'].split(';')
 DIFFERENT_USER_TEXT = os.environ['different_user'].split(';')
-DAY_PERIOD_AT = datetime.strptime(os.getenv('day_period_at',default="00:00")).time()
+DAY_PERIOD_AT = datetime.strptime(os.getenv('day_period_at',default="00:00"), "%H:%M").time()
 
 class StateTransitions(Enum):
     BROADCAST = 0
