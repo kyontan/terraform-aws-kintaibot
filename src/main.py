@@ -48,7 +48,7 @@ RESPONSES = {
 UNDEFINED_ACTION_TEXT = os.environ['undef_action_text'].split(';')
 ILLEGAL_ACTION_TEXT = os.environ['illegal_action_text'].split(';')
 DIFFERENT_USER_TEXT = os.environ['different_user'].split(';')
-
+DAY_PERIOD_AT = datetime.strptime(os.getenv('day_period_at',default="00:00")).time()
 
 class StateTransitions(Enum):
     BROADCAST = 0
@@ -75,8 +75,15 @@ class WorkingStateMachine:
         self.name = 'state'
         self.date = datetime.fromtimestamp(timestamp, JST)
         self.timestamp = timestamp
-        self.timecard_obj = s3.Object(BUCKET_NAME,
-                                      self.date.strftime('%Y-%m-%d.csv'))
+
+        timecard_obj_name = self.date.strftime('%Y-%m-%d.csv')
+
+        # DAY_PERIOD_AT より前の時刻の動作は前日のものとみなす
+        if self.date.time() < DAY_PERIOD_AT:
+            one_day = timedelta(days=1)
+            timecard_obj_name = (self.date - one_day).strftime('%Y-%m-%d.csv')
+
+        self.timecard_obj = s3.Object(BUCKET_NAME, timecard_obj_name)
         self.total_time = {
             State.WORKING.name: list(),
             State.BREAK.name: list(),
