@@ -54,6 +54,7 @@ resource "aws_lambda_function" "bot" {
       undef_action_text       = join(";", var.undef_action_text)
       different_user          = join(";", var.different_user)
       illegal_action_text     = join(";", var.illegal_action_text)
+      day_period_at           = var.day_period_at
     }
   }
 }

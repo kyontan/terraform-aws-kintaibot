@@ -46,6 +46,12 @@ variable "different_user" {
   description = "許可されていないユーザーからのコマンドのレスポンス"
 }
 
+variable "day_period_at" {
+  type        = string
+  default     = "00:00"
+  description = "一日の始まりの時刻"
+}
+
 /* ====================
 設定（勤怠）
 ==================== */
